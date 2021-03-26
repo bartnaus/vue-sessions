@@ -36,24 +36,7 @@ export default {
   actions: {
     addSession({ commit }) {
       const sessionId = uuidv4();
-      // store.registerModule(sessionId, customer);
-      // should we create a seperate store here?
-      // createStore()
-      /*
-
-      const store = createStore({
-        plugins: [createLogger()],
-        state: {
-          hello: "world",
-          user: { name: "Bart Naus", role: "Betweter" },
-          activeCustomer: null,
-        },
-        mutations: {},
-        actions: {},
-        modules: { sessions },
-      });
-*/
-
+      store.registerModule(sessionId, customer);
       commit("addSession", sessionId);
       commit("setActiveSession", sessionId);
     },

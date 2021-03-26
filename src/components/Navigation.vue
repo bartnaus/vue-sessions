@@ -23,7 +23,6 @@
 <script lang="ts">
 import { computed, defineComponent } from "vue";
 import { useStore } from "vuex";
-import { addSession as addSessionStore } from "../store/index";
 
 export default defineComponent({
   name: "Navigation",
@@ -35,7 +34,6 @@ export default defineComponent({
       sessions: computed(() => store.state.sessions.sessions),
       addSession: () => {
         store.dispatch("sessions/addSession");
-        return addSessionStore();
       },
       removeSession: (sessionId: string) =>
         store.dispatch("sessions/removeSession", sessionId),

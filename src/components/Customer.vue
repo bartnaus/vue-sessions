@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { getSessionStore } from "../store/index";
+import { useStore } from "vuex";
 
 export default defineComponent({
   name: "Customer",
@@ -25,11 +25,13 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = getSessionStore(props.session); // active store here...
-    const rootStore = getSessionStore("root"); // active store here...
+    const store = useStore();
+
     const customerModel = ref({
-      name: store.state.user.name,
-      address: store.state.user.address,
+      name: store.state[props.session].name,
+      address: {
+        street: store.state[props.session].address.street,
+      },
     });
 
     return {
