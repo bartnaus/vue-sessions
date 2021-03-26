@@ -1,6 +1,5 @@
 <template>
   <navigation />
-
   <div class="border border-black p-3 rounded-b-lg">
     <div v-if="activeSession">
       <customer
@@ -12,13 +11,13 @@
     </div>
     <div v-else>No active session</div>
   </div>
-
-  <pre class="text-gray-600 text-xs mt-5">{{ prettyJson($store.state) }}</pre>
+  <!--  <pre class="text-gray-600 text-xs mt-5">{{ prettyJson($store.state) }}</pre>-->
 </template>
 
 <script lang="ts">
 import { computed, defineComponent } from "vue";
 import { useStore } from "vuex";
+import { rootStore, addSession, storeList } from "../store";
 import Customer from "./Customer.vue";
 import Navigation from "./Navigation.vue";
 
@@ -26,15 +25,25 @@ export default defineComponent({
   components: { Navigation, Customer },
   name: "Home",
   setup() {
-    const store = useStore();
-
+    console.log(rootStore.state.sessions);
+    console.log(storeList);
+    let sessionStore = addSession();
+    console.log(sessionStore);
+    console.log(storeList);
+    console.log(storeList[0] === storeList[1]);
+    console.log(sessionStore === rootStore);
+    console.log(JSON.stringify(rootStore.state));
     return {
-      activeSession: computed(() => store.state.sessions.active),
-      sessions: computed(() => store.state.sessions.sessions),
+      activeSession: computed(() => rootStore.state.sessions.active),
+      sessions: computed(() => rootStore.state.sessions.sessions),
       prettyJson: (input: string) => {
         return JSON.stringify(input, null, 2);
       },
     };
+  },
+  onMounted() {
+    console.log("Mounted!");
+    console.log(this.$store.state);
   },
 });
 </script>

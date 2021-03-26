@@ -1,31 +1,36 @@
 import { createLogger, createStore, Store } from "vuex";
 import sessions from "./modules/sessions";
+import customer from "./modules/customer";
 
 import { InjectionKey } from "vue";
 import { v4 as uuidv4 } from "uuid";
 import RuntimeError = WebAssembly.RuntimeError;
 
-const store = createStore({
+export const rootStore = createStore({
   plugins: [createLogger()],
   state: {
     hello: "world",
-    user: { name: "Bart Naus", role: "Betweter" },
-    activeCustomer: null,
+    user: {
+      name: "Bart Naus",
+      role: "Betweter",
+      address: { street: "hoi" },
+    },
+    mutations: {},
+    actions: {},
+    modules: { sessions, customer },
   },
-  mutations: {},
-  actions: {},
-  modules: { sessions },
 });
 
+// store 2
 interface storedef {
   id: string;
   store: Store<sessionState>;
 }
 
-const storeList: Array<storedef> = [
+export const storeList: Array<storedef> = [
   {
     id: "root",
-    store: store,
+    store: rootStore,
   },
 ];
 
@@ -42,7 +47,6 @@ interface UserInterface {
 interface sessionState {
   hello: string;
   user: UserInterface;
-  activeCustomer: null;
 }
 
 export function addSession(): Store<sessionState> {
@@ -50,13 +54,14 @@ export function addSession(): Store<sessionState> {
     plugins: [createLogger()],
     state: {
       hello: "world",
-      user: { name: "Bart Naus", role: "Betweter" },
-      activeCustomer: null,
+      user: { name: "Bart Naus", role: "Betweter", address: { street: "hoi" } },
     },
     mutations: {},
     actions: {},
     modules: { sessions },
   });
+
+  // make the store known to the rest of the application
   storeList.push({
     id: uuidv4(),
     store,
@@ -75,4 +80,3 @@ export function getSessionStore(sessionId: string): Store<sessionState> {
 }
 
 export const key: InjectionKey<Store<sessionState>> = Symbol();
-export default store;

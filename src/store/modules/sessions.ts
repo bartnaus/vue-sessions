@@ -1,12 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import store from "../index";
+// import { store } from "../index";
 import { v4 as uuidv4 } from "uuid";
 import customer from "./customer";
+import { addSession } from "../index";
 
 export default {
   namespaced: true,
-  state: () => ({ sessions: [], active: null }),
+  state: {
+    activeSession: null,
+    sessions: ["asd"],
+  },
   mutations: {
     addSession(state: any, sessionId: string) {
       state.sessions.push(sessionId);
@@ -34,31 +38,29 @@ export default {
     },
   },
   actions: {
-    addSession({ commit }) {
-      const sessionId = uuidv4();
+    addSession({ commit }, sessionId: string) {
+      // const sessionId = uuidv4();
       // store.registerModule(sessionId, customer);
       // should we create a seperate store here?
       // createStore()
-      /*
 
-      const store = createStore({
-        plugins: [createLogger()],
-        state: {
-          hello: "world",
-          user: { name: "Bart Naus", role: "Betweter" },
-          activeCustomer: null,
-        },
-        mutations: {},
-        actions: {},
-        modules: { sessions },
-      });
-*/
+      // const store = createStore({
+      //   plugins: [createLogger()],
+      //   state: {
+      //     hello: "world",
+      //     user: { name: "Bart Naus", role: "Betweter" },
+      //     activeCustomer: null,
+      //   },
+      //   mutations: {},
+      //   actions: {},
+      //   modules: { sessions },
+      // });
 
       commit("addSession", sessionId);
       commit("setActiveSession", sessionId);
     },
     removeSession({ commit }, sessionId: string) {
-      store.unregisterModule(sessionId);
+      // store.unregisterModule(sessionId);
       commit("removeSession", sessionId);
     },
     setActiveSession({ commit }, sessionId: string) {

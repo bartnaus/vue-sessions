@@ -2,12 +2,12 @@
   <ul class="list-none">
     <li
       v-for="session in sessions"
-      :key="session"
-      @click="setActiveSession(session)"
-      :class="{ active: session === activeSession }"
+      :key="session.id"
+      @click="setActiveSession(session.id)"
+      :class="{ active: session.id === activeSession }"
     >
       <span>
-        {{ session }}
+        {{ session.id }}
       </span>
       <button
         @click.stop="removeSession(session)"
@@ -21,21 +21,26 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from "vue";
+import { computed, defineComponent, ref } from "vue";
 import { useStore } from "vuex";
 import { addSession as addSessionStore } from "../store/index";
+import { storeList, getSessionStore, rootStore } from "../store";
 
 export default defineComponent({
   name: "Navigation",
   setup() {
     const store = useStore();
+    console.log(store);
+    console.log("got a list of sessions?", storeList);
 
     return {
       activeSession: computed(() => store.state.sessions.active),
-      sessions: computed(() => store.state.sessions.sessions),
+      sessions: ref(storeList),
       addSession: () => {
-        store.dispatch("sessions/addSession");
-        return addSessionStore();
+        let sessionStateStore = addSessionStore();
+        console.log("adding session", sessionStateStore);
+        store.dispatch("sessions/addSession", sessionStateStore.id);
+        return sessionStateStore;
       },
       removeSession: (sessionId: string) =>
         store.dispatch("sessions/removeSession", sessionId),
