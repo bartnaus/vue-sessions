@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-// import { store } from "../index";
+import store from "../index";
 import { v4 as uuidv4 } from "uuid";
 import customer from "./customer";
 import { addSession } from "../index";
 
 export default {
   namespaced: true,
-  state: {
+  state: () => ({
     activeSession: null,
     sessions: ["asd"],
-  },
+  }),
   mutations: {
     addSession(state: any, sessionId: string) {
       state.sessions.push(sessionId);
@@ -63,10 +63,10 @@ export default {
       // store.unregisterModule(sessionId);
       commit("removeSession", sessionId);
     },
-    setActiveSession({ commit }, sessionId: string) {
+    setActiveSession({ commit, dispatch }, sessionId: string) {
       commit("setActiveSession", sessionId);
-      // dispatch("setActivateSession", sessionId, { root: true });
-      // store.registerModule("activeCustomer", store.modules[sessionId]);
+      dispatch("setActivateSession", sessionId, { root: true });
+      store.registerModule("activeCustomer", store.modules[sessionId]);
     },
   },
   getters: {},

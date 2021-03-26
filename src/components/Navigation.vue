@@ -4,7 +4,7 @@
       v-for="session in sessions"
       :key="session.id"
       @click="setActiveSession(session.id)"
-      :class="{ active: session.id === activeSession }"
+      :class="{ active: true }"
     >
       <span>
         {{ session.id }}
@@ -24,7 +24,7 @@
 import { computed, defineComponent, ref } from "vue";
 import { useStore } from "vuex";
 import { addSession as addSessionStore } from "../store/index";
-import { storeList, getSessionStore, rootStore } from "../store";
+import { storeList, getSessionStore } from "../store";
 
 export default defineComponent({
   name: "Navigation",
@@ -33,12 +33,15 @@ export default defineComponent({
     console.log(store);
     console.log("got a list of sessions?", storeList);
 
+    let sessions = ref(storeList);
+
     return {
-      activeSession: computed(() => store.state.sessions.active),
-      sessions: ref(storeList),
+      // activeSession: computed(() => store.state.sessions.active),
+      sessions: sessions,
       addSession: () => {
         let sessionStateStore = addSessionStore();
         console.log("adding session", sessionStateStore);
+        console.log("current sessionList", sessions);
         store.dispatch("sessions/addSession", sessionStateStore.id);
         return sessionStateStore;
       },

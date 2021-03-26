@@ -8,6 +8,7 @@
       <label for="street">Street</label>
       <input type="text" v-model="customerModel.address.street" id="street" />
     </p>
+    <p>{{customerModel}}</p>
     <button @click="updateCustomer" class="button">Save</button>
   </div>
 </template>
@@ -26,6 +27,7 @@ export default defineComponent({
   },
   setup(props) {
     const store = getSessionStore(props.session); // active store here...
+    console.log('session store for customer' , store.state)
     const rootStore = getSessionStore("root"); // root store here...
     const customerModel = ref({
       name: store.state.user.name,

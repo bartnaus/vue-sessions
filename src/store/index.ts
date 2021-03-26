@@ -4,9 +4,8 @@ import customer from "./modules/customer";
 
 import { InjectionKey } from "vue";
 import { v4 as uuidv4 } from "uuid";
-import RuntimeError = WebAssembly.RuntimeError;
 
-export const rootStore = createStore({
+const store = createStore({
   plugins: [createLogger()],
   state: {
     hello: "world",
@@ -30,7 +29,7 @@ interface storedef {
 export const storeList: Array<storedef> = [
   {
     id: "root",
-    store: rootStore,
+    store: store,
   },
 ];
 
@@ -73,10 +72,11 @@ export function addSession(): Store<sessionState> {
 export function getSessionStore(sessionId: string): Store<sessionState> {
   const storedef = storeList.find((def: storedef) => def.id == sessionId);
   if (!storedef) {
-    throw new RuntimeError();
+    throw new Error();
   }
 
   return storedef.store;
 }
 
 export const key: InjectionKey<Store<sessionState>> = Symbol();
+export default store

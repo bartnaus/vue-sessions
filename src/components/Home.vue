@@ -1,10 +1,10 @@
 <template>
   <navigation />
   <div class="border border-black p-3 rounded-b-lg">
-    <div v-if="activeSession">
+    <div v-if="true">
       <customer
-        v-for="session in sessions"
-        v-show="session === activeSession"
+        v-for="session in storeList"
+        v-show="true"
         :session="session"
         :key="session"
       />
@@ -17,7 +17,7 @@
 <script lang="ts">
 import { computed, defineComponent } from "vue";
 import { useStore } from "vuex";
-import { rootStore, addSession, storeList } from "../store";
+import store, { addSession, storeList } from "../store";
 import Customer from "./Customer.vue";
 import Navigation from "./Navigation.vue";
 
@@ -25,25 +25,28 @@ export default defineComponent({
   components: { Navigation, Customer },
   name: "Home",
   setup() {
-    console.log(rootStore.state.sessions);
+    console.log(store.state.sessions);
     console.log(storeList);
     let sessionStore = addSession();
+
     console.log(sessionStore);
     console.log(storeList);
     console.log(storeList[0] === storeList[1]);
-    console.log(sessionStore === rootStore);
-    console.log(JSON.stringify(rootStore.state));
+    console.log(sessionStore === store);
+    console.log(JSON.stringify(store.state));
+
     return {
-      activeSession: computed(() => rootStore.state.sessions.active),
-      sessions: computed(() => rootStore.state.sessions.sessions),
+      // activeSession: computed(() => rootStore.state.sessions.active),
+      // sessions: computed(() => rootStore.state.sessions.sessions),
       prettyJson: (input: string) => {
         return JSON.stringify(input, null, 2);
       },
     };
   },
-  onMounted() {
+  mounted() {
     console.log("Mounted!");
-    console.log(this.$store.state);
+    console.log(this.$store.state === store);
+    console.log(this.$store._actions)
   },
 });
 </script>
